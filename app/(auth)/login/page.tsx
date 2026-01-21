@@ -1,11 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import z, { check } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { handleLogin } from "@/lib/actions/auth-action";
+import { useAuth } from "@/context/AuthContext";
 
 export const loginSchema = z.object(
     {
@@ -17,6 +18,7 @@ export const loginSchema = z.object(
 export type LoginForm = z.infer<typeof loginSchema>;
 
 export default function Page() {
+    const { checkAuth } = useAuth();
     const router = useRouter();
     const [pending, setTransition] = useTransition()
     const { register, handleSubmit, formState: { errors, isSubmitting } }
@@ -35,6 +37,7 @@ export default function Page() {
             if(!result.success){
                 throw new Error(result.message);
             }
+            await checkAuth();
             // success, redirect (optional)
             router.push("/");
         }catch(err: Error | any){

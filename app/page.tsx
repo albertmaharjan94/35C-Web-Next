@@ -1,8 +1,14 @@
+"use client"; // IMPORTANT TO USE CONTEXT
 import Image from "next/image";
-
+import { useAuth } from "@/context/AuthContext";
 export default function Home() {
+  const { user, logout } = useAuth();
   return (
-    <div>Home</div>
+    <div>
+      Home
+      { user && <div> Welcome {user.email}</div> }
+      { user && <button onClick={logout}>Logout</button> }
+    </div>
   );
 }
 
