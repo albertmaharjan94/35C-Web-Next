@@ -1,6 +1,6 @@
 // server side processing of auth actions
 "use server";
-import { register, login } from "../api/auth";
+import { register, login, whoami } from "../api/auth";
 import { setAuthToken, setUserData } from "../cookie";
 
 export const handleRegister = async (formData: any) => {
@@ -41,5 +41,22 @@ export const handleLogin = async (formData: any) => {
         }
     }catch(err: Error | any){
         return { success: false, message: err.message || "Login failed"}; // change
+    }
+}
+
+export const handleWhoAmI = async () => {  
+    try{
+        const result = await whoami();
+        if(result.success){
+            return {
+                success: true,
+                data: result.data 
+            };
+        }
+        return {
+            success: false, message: result.message || "Failed to fetch user data"
+        }
+    } catch(err: Error | any){
+        return { success: false, message: err.message || "Failed to fetch user data"};
     }
 }
