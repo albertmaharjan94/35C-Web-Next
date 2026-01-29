@@ -1,7 +1,8 @@
 // server side processing of auth actions
 "use server";
-import { register, login, whoami } from "../api/auth";
+import { register, login, whoami, updateProfile } from "../api/auth";
 import { setAuthToken, setUserData } from "../cookie";
+import { revalidatePath } from "next/cache";
 
 export const handleRegister = async (formData: any) => {
     try{
@@ -58,5 +59,27 @@ export const handleWhoAmI = async () => {
         }
     } catch(err: Error | any){
         return { success: false, message: err.message || "Failed to fetch user data"};
+    }
+}
+
+export const handleUpdateProfile = async (formData: any) => {
+    try{
+        const result = await updateProfile(formData);
+        if(result.success){
+            // update cookie data
+            await setUserData(result.data);
+            // optionally revalidate path(s)
+            revalidatePath("/user/profile");
+            return {
+                success: true,
+                message: "Profile updated successfully",
+                data: result.data 
+            };
+        }
+        return {
+            success: false, message: result.message || "Failed to update profile"
+        }
+    }catch(err: Error | any){
+        return { success: false, message: err.message || "Failed to update profile"};
     }
 }

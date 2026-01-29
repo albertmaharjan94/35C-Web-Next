@@ -49,3 +49,24 @@ export const whoami = async () => {
         );
     }
 }
+
+export const updateProfile = async (updateData: any) => {
+    try{
+        const response = await axios.put(
+            API.AUTH.UPDATEPROFILE,
+            updateData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data' // IMPORTANT: multer
+                }
+            }
+        );
+        return response.data;
+    }catch(err: Error | any){
+        throw new Error(
+            err.response?.data?.message 
+            || err.message  
+            || "Failed to update profile" 
+        );
+    }
+}
