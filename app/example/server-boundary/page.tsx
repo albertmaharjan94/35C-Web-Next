@@ -14,6 +14,9 @@ export default async function Page() {
     }
 
     return (
-        <div>Page is ready</div>
+        <div>Page is ready
+
+            {/* <ClientComponent/> */}
+        </div>
     );
 }
