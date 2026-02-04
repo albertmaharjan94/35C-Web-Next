@@ -6,7 +6,9 @@ export const API = {
         LOGIN: '/api/auth/login',
         REGISTER: '/api/auth/register',
         WHOAMI: '/api/auth/whoami',
-        UPDATEPROFILE: '/api/auth/update-profile'
+        UPDATEPROFILE: '/api/auth/update-profile',
+        REQUEST_PASSWORD_RESET: '/api/auth/request-password-reset',
+        RESET_PASSWORD: (token: string) => `/api/auth/reset-password/${token}`,
     },
     ADMIN: {
         BLOGS: {
